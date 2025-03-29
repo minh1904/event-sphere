@@ -97,7 +97,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
           </Button>
         </form>
         <Button
-          onClick={() => signIn('google')}
+          onClick={() => signIn('google', { callbackUrl: '/' })}
           className="rounded-[3px] border-[1px] border-black w-56 h-12 bg-mc text-black cursor-pointer"
         >
           {isSignIn ? 'Đăng nhập bằng Google' : 'Đăng ký bằng Google'}{' '}

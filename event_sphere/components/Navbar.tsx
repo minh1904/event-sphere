@@ -1,4 +1,6 @@
 'use server';
+import DecryptedText from './DecryptedText/DecryptedText';
+import DropdownUser from '@/components/DropdownUser';
 
 import { auth } from '@/auth';
 
@@ -6,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import LocalMallSharpIcon from '@mui/icons-material/LocalMallSharp';
-import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 
 const Navbar = async () => {
   const session = await auth();
@@ -26,17 +27,25 @@ const Navbar = async () => {
         </div>
       </Link>
 
-      <div className="space-x-1.5">
-        <Link href="/" className="uppercase hover:">
-          Trang chủ
-        </Link>
-        <Link href="/about" className="uppercase">
-          giới Thiệu
-        </Link>
-        <Link href="/contact" className="uppercase">
-          Liên hệ
-        </Link>
-      </div>
+      <ul className="flex items-center text-center uppercase gap-2">
+        <li className=" block">
+          <Link href="/">
+            <DecryptedText text="Trang chủ" />
+          </Link>
+        </li>
+
+        <li className=" block ">
+          <Link href="/about">
+            <DecryptedText text="Giới thiệu" />
+          </Link>
+        </li>
+
+        <li className=" block ">
+          <Link href="/contact">
+            <DecryptedText text="Liên hệ" />
+          </Link>
+        </li>
+      </ul>
 
       <div>
         {session && session?.user ? (
@@ -45,10 +54,7 @@ const Navbar = async () => {
               className="cursor-pointer mb-0.5"
               sx={{ fontSize: 35 }}
             />
-            <AccountCircleSharpIcon
-              className="cursor-pointer"
-              sx={{ fontSize: 35 }}
-            />
+            <DropdownUser />
           </div>
         ) : (
           <div className="flex items-center space-x-1">
