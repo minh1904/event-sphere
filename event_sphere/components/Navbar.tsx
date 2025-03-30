@@ -27,7 +27,7 @@ const Navbar = async () => {
         </div>
       </Link>
 
-      <ul className="flex items-center text-center uppercase gap-2">
+      <ul className="flex items-center text-center uppercase gap-2 ">
         <li className=" block">
           <Link href="/">
             <DecryptedText text="Trang chủ" />
@@ -58,7 +58,10 @@ const Navbar = async () => {
           </div>
         ) : (
           <div className="flex items-center space-x-1">
-            <LocalMallSharpIcon />
+            <LocalMallSharpIcon
+              className="cursor-pointer mb-0.5"
+              sx={{ fontSize: 35 }}
+            />
             <Link href="/sign-in">Đăng nhập</Link>
           </div>
         )}
