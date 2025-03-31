@@ -8,7 +8,7 @@ const Home = async ({
 }) => {
   const query = (await searchParams).query;
   return (
-    <div className="mt-8 md:mt-20">
+    <div className="mt-8 md:mt-56">
       <div className="flex justify-center mb-5">
         <h1 className="uppercase text-3xl md:text-5xl font-bold ">
           Tìm kiếm sự kiện

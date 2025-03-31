@@ -21,40 +21,20 @@ import {
 
 const frameworks = [
   {
-    value: 'Doanh nghiệp',
-    label: 'Doanh nghiệp',
+    value: 'Tất cả',
+    label: 'Tất cả',
   },
   {
-    value: 'Văn hóa',
-    label: 'Văn hóa',
+    value: 'Miễn phí',
+    label: 'Miễn phí',
   },
   {
-    value: 'Thể thao',
-    label: 'Thể thao',
-  },
-  {
-    value: 'Giáo dục',
-    label: 'Giáo dục',
-  },
-  {
-    value: 'Xã hội',
-    label: 'Xã hội',
-  },
-  {
-    value: 'Quảng bá',
-    label: 'Quảng bá',
-  },
-  {
-    value: 'Gây quỹ',
-    label: 'Gây quỹ',
-  },
-  {
-    value: 'Âm nhạc/Giải trí',
-    label: 'Âm nhạc/Giải trí',
+    value: 'Mất phí',
+    label: 'Mất phí',
   },
 ];
 
-export function FilterType() {
+export function FilterFee() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
 
