@@ -1,12 +1,8 @@
 import Events from '@/components/Events';
 import Search from '@/components/Search';
 
-const Home = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ query: string }>;
-}) => {
-  const query = (await searchParams).query;
+const Home = async ({ searchParams }: { searchParams: { query?: string } }) => {
+  const query = (await searchParams).query || '';
   return (
     <div className="mt-8 md:mt-56">
       <div className="flex justify-center mb-5">
@@ -15,7 +11,7 @@ const Home = async ({
         </h1>
       </div>
       <Search query={query} />
-      <Events />
+      <Events searchParams={searchParams} />
     </div>
   );
 };

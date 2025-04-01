@@ -1,9 +1,7 @@
-import React from 'react';
 import { FilterType } from './FilterType';
 import { FilterFee } from './FilterFee';
 import CardEvents from './CardEvents';
 
-// Tách danh sách sự kiện ra ngoài component để tối ưu performance
 const events = [
   {
     id: 1,
@@ -79,7 +77,32 @@ const events = [
   },
 ];
 
-const Events = () => {
+function removeVietnameseTones(str: string): string {
+  str = str.toLowerCase();
+  str = str
+    .replace(/[àáảãạăằắẳẵặâầấẩẫậ]/g, 'a')
+    .replace(/[èéẻẽẹêềếểễệ]/g, 'e')
+    .replace(/[ìíỉĩị]/g, 'i')
+    .replace(/[òóỏõọôồốổỗộơờớởỡợ]/g, 'o')
+    .replace(/[ùúủũụưừứửữự]/g, 'u')
+    .replace(/[ỳýỷỹỵ]/g, 'y')
+    .replace(/[đ]/g, 'd');
+  str = str.replace(/[^a-z0-9\s]/g, '');
+  return str;
+}
+
+const Events = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) => {
+  const searchQuery = searchParams?.query || '';
+  const normalizedQuery = removeVietnameseTones(searchQuery);
+
+  const filteredEvents = events.filter((event) => {
+    const normalizedTitle = removeVietnameseTones(event.title);
+    return normalizedTitle.includes(normalizedQuery);
+  });
   return (
     <div className="mt-5">
       {/* Bộ lọc */}
@@ -88,10 +111,9 @@ const Events = () => {
         <FilterFee />
       </div>
 
-      {/* Danh sách sự kiện */}
       <div className="container mx-auto px-4 py-8 md:mt-28">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <CardEvents key={event.id} {...event} />
           ))}
         </div>
