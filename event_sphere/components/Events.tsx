@@ -13,7 +13,7 @@ const events = [
     price: 500000,
     isFree: false,
     ticketLeft: 10,
-    type: 'Concert',
+    type: 'Âm nhạc/Giải trí', // Concert → Âm nhạc/Giải trí
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const events = [
     price: 0,
     isFree: true,
     ticketLeft: 50,
-    type: 'Food Festival',
+    type: 'Văn hóa', // Food Festival → Văn hóa
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const events = [
     price: 300000,
     isFree: false,
     ticketLeft: 20,
-    type: 'Workshop',
+    type: 'Giáo dục', // Workshop → Giáo dục
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const events = [
     price: 0,
     isFree: true,
     ticketLeft: 100,
-    type: 'Exhibition',
+    type: 'Văn hóa', // Exhibition → Văn hóa
   },
   {
     id: 5,
@@ -61,7 +61,7 @@ const events = [
     price: 200000,
     isFree: false,
     ticketLeft: 30,
-    type: 'Sports',
+    type: 'Thể thao', // Sports → Thể thao
   },
   {
     id: 6,
@@ -73,7 +73,7 @@ const events = [
     price: 150000,
     isFree: false,
     ticketLeft: 40,
-    type: 'Festival',
+    type: 'Xã hội', // Festival → Xã hội
   },
 ];
 
@@ -87,7 +87,7 @@ function removeVietnameseTones(str: string): string {
     .replace(/[ùúủũụưừứửữự]/g, 'u')
     .replace(/[ỳýỷỹỵ]/g, 'y')
     .replace(/[đ]/g, 'd');
-  str = str.replace(/[^a-z0-9\s]/g, '');
+  str = str.replace(/[^a-z0-9\s/]/g, ''); // Giữ dấu "/" trong "Âm nhạc/Giải trí"
   return str;
 }
 
@@ -97,20 +97,38 @@ const Events = async ({
   searchParams: { [key: string]: string };
 }) => {
   const searchQuery = searchParams?.query || '';
+  const feeFilter = searchParams?.fee || ''; // 'free', 'paid', hoặc rỗng
+  const typeFilter = searchParams?.type || ''; // Danh mục tiếng Việt hoặc rỗng
+
   const normalizedQuery = removeVietnameseTones(searchQuery);
 
   const filteredEvents = events.filter((event) => {
     const normalizedTitle = removeVietnameseTones(event.title);
-    return normalizedTitle.includes(normalizedQuery);
+
+    const matchesQuery = normalizedQuery
+      ? normalizedTitle.includes(normalizedQuery)
+      : true;
+
+    const matchesFee =
+      feeFilter === 'free'
+        ? event.isFree
+        : feeFilter === 'paid'
+          ? !event.isFree
+          : true;
+
+    const matchesType = typeFilter
+      ? event.type === typeFilter // So sánh chính xác với type tiếng Việt
+      : true;
+
+    return matchesQuery && matchesFee && matchesType;
   });
+
   return (
     <div className="mt-5">
-      {/* Bộ lọc */}
       <div className="flex gap-2.5 justify-center">
         <FilterType />
         <FilterFee />
       </div>
-
       <div className="container mx-auto px-4 py-8 md:mt-28">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEvents.map((event) => (
