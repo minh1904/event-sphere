@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 interface CardEventsProps {
-  id: number;
+  _id: number;
   ticketLeft: number;
   imageUrl: string;
   type: string;
@@ -15,7 +16,7 @@ interface CardEventsProps {
 }
 
 const CardEvents: React.FC<CardEventsProps> = ({
-  id,
+  _id,
   ticketLeft,
   imageUrl,
   type,
@@ -42,7 +43,9 @@ const CardEvents: React.FC<CardEventsProps> = ({
 
       <div className="mt-5 space-y-1 px-4 ">
         <p className="text-gray-700 uppercase">{type}</p>
-        <h2 className="text-2xl uppercase font-bold">{title}</h2>
+        <Link href={`/post/${_id}`} className="text-2xl uppercase font-bold">
+          {title}
+        </Link>
         <p className="text-gray-700">{description}</p>
       </div>
 
