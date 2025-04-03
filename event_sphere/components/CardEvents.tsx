@@ -46,6 +46,7 @@ const CardEvents: React.FC<CardEventsProps> = ({
         <Link href={`/post/${id}`} className="text-2xl uppercase font-bold">
           {title}
         </Link>
+
         <p className="text-gray-700">{description}</p>
       </div>
 

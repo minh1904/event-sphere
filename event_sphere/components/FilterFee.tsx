@@ -1,7 +1,8 @@
 'use client';
+
 import * as React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,37 +20,23 @@ import {
 } from '@/components/ui/popover';
 
 const frameworks = [
-  { value: '', label: 'Tất cả' }, // Giá trị rỗng đại diện cho "Tất cả"
-  { value: 'free', label: 'Miễn phí' },
-  { value: 'paid', label: 'Mất phí' },
+  {
+    value: 'Tất cả',
+    label: 'Tất cả',
+  },
+  {
+    value: 'Miễn phí',
+    label: 'Miễn phí',
+  },
+  {
+    value: 'Mất phí',
+    label: 'Mất phí',
+  },
 ];
 
 export function FilterFee() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(searchParams.get('fee') || '');
-
-  // Đồng bộ giá trị với searchParams khi load trang
-  React.useEffect(() => {
-    setValue(searchParams.get('fee') || '');
-  }, [searchParams]);
-
-  const handleSelect = (currentValue: string) => {
-    const newValue = currentValue === value ? '' : currentValue;
-    setValue(newValue);
-    setOpen(false);
-
-    const params = new URLSearchParams(searchParams);
-    if (newValue) {
-      params.set('fee', newValue);
-    } else {
-      params.delete('fee');
-    }
-    replace(`${pathname}?${params.toString()}`);
-  };
+  const [value, setValue] = React.useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -62,21 +49,24 @@ export function FilterFee() {
         >
           {value
             ? frameworks.find((framework) => framework.value === value)?.label
-            : 'Phí'}
+            : 'Sắp xếp'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 ">
         <Command>
           <CommandInput placeholder="Tìm kiếm" />
           <CommandList>
-            <CommandEmpty>Không tìm thấy</CommandEmpty>
+            <CommandEmpty>Không tìm thấy </CommandEmpty>
             <CommandGroup>
               {frameworks.map((framework) => (
                 <CommandItem
                   key={framework.value}
                   value={framework.value}
-                  onSelect={handleSelect}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? '' : currentValue);
+                    setOpen(false);
+                  }}
                 >
                   <Check
                     className={cn(

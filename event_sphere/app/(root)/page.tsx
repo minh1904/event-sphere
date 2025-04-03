@@ -1,7 +1,12 @@
 import Events from '@/components/Events';
 import Search from '@/components/Search';
+import { Pagination } from '@/components/ui/pagination';
 
-const Home = async ({ searchParams }: { searchParams: { query?: string } }) => {
+const Home = async ({
+  searchParams,
+}: {
+  searchParams: { query?: string; page?: string };
+}) => {
   const query = (await searchParams).query || '';
   return (
     <div className="mt-8 md:mt-56">
@@ -12,6 +17,7 @@ const Home = async ({ searchParams }: { searchParams: { query?: string } }) => {
       </div>
       <Search query={query} />
       <Events searchParams={searchParams} />
+      <Pagination />
     </div>
   );
 };

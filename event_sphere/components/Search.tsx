@@ -8,14 +8,17 @@ const Search = ({ query }: { query: string }) => {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const { replace } = useRouter();
-
-  const handleSearch = useDebouncedCallback((term) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
+    console.log(`Searching... ${term}`);
     const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
+
     if (term) {
       params.set('query', term);
     } else {
       params.delete('query');
     }
+
     replace(`${pathName}?${params.toString()}`);
   }, 300);
   return (
@@ -26,7 +29,7 @@ const Search = ({ query }: { query: string }) => {
           onChange={(e) => handleSearch(e.target.value)}
           defaultValue={searchParams.get('query')?.toString()}
           placeholder="Nhập sự kiện"
-          className="w-full h-14 pl-4 pr-12 py-2 border rounded-[3px] border-black focus:outline-none"
+          className=" w-full h-14 pl-4 pr-12 py-2 border rounded-[3px] border-black focus:outline-none"
         />
 
         <div className="flex gap-1.5 absolute right-2 top-1/2 transform -translate-y-1/2 ">
