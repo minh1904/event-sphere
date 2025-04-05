@@ -1,13 +1,14 @@
 import Events from '@/components/Events';
 import Search from '@/components/Search';
 import { Pagination } from '@/components/ui/pagination';
+import * as React from 'react';
 
 const Home = async ({
   searchParams,
 }: {
   searchParams: { query?: string; page?: string };
 }) => {
-  const query = (await searchParams).query || '';
+  const query = searchParams.query || '';
   return (
     <div className="mt-8 md:mt-56">
       <div className="flex justify-center mb-5">

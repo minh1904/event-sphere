@@ -24,7 +24,7 @@ const DropdownUser = async () => {
       >
         <Avatar className="w-[42px] h-[42px]">
           <AvatarImage src={session?.user?.image} className="rounded-full " />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>ES</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-3 md:mr-8">

@@ -170,11 +170,30 @@ const Events = async ({
   searchParams: { [key: string]: string };
 }) => {
   const searchQuery = searchParams?.query || '';
+  const feeFilter = searchParams?.fee || ''; // 'free', 'paid', hoặc rỗng
+  const typeFilter = searchParams?.type || ''; // Danh mục tiếng Việt hoặc rỗng
+
   const normalizedQuery = removeVietnameseTones(searchQuery);
 
   const filteredEvents = events.filter((event) => {
     const normalizedTitle = removeVietnameseTones(event.title);
-    return normalizedTitle.includes(normalizedQuery);
+
+    const matchesQuery = normalizedQuery
+      ? normalizedTitle.includes(normalizedQuery)
+      : true;
+
+    const matchesFee =
+      feeFilter === 'free'
+        ? event.isFree
+        : feeFilter === 'paid'
+          ? !event.isFree
+          : true;
+
+    const matchesType = typeFilter
+      ? event.type === typeFilter // So sánh chính xác với type tiếng Việt
+      : true;
+
+    return matchesQuery && matchesFee && matchesType;
   });
   const eventsPerPage = 9; // Số sự kiện mỗi trang
   const currentPage = Number(searchParams?.page) || 1; // Lấy trang hiện tại từ searchParams
@@ -204,7 +223,7 @@ const Events = async ({
       </div>
 
       <div className="mt-8 mb-10">
-        <PaginationComponent pageCount={totalPages} />
+        {totalPages > 0 && <PaginationComponent pageCount={totalPages} />}
       </div>
     </div>
   );
