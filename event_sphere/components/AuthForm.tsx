@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { registerUser } from '@/lib/auth';
 
 import { signIn } from 'next-auth/react';
 
@@ -40,9 +41,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       if (type === 'sign-up') {
+        await registerUser({
+          name: values.name!,
+          email: values.email,
+          password: values.password,
+          role: 'user',
+        });
         toast.success('Tạo tài khoản thành công');
         router.push('/sign-in');
       } else {
@@ -50,9 +57,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
         router.push('/');
       }
       console.log(values);
-    } catch (error) {
+    } catch (error: unknown) {
       console.log(error);
-      toast.error(`Xuất hiện lỗi :${error}`);
+      toast.error(`Xuất hiện lỗi: ${error.message}`);
     }
   }
   return (
