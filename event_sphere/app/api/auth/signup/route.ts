@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import { NextResponse } from 'next/server';
 import { db } from '@/db/index';
-import { usersTable } from '@/db/schema';
+import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function POST(request: Request) {
@@ -25,11 +25,7 @@ export async function POST(request: Request) {
 
   try {
     const existingUser = (
-      await db
-        .select()
-        .from(usersTable)
-        .where(eq(usersTable.email, email))
-        .limit(1)
+      await db.select().from(users).where(eq(users.email, email)).limit(1)
     )[0];
     if (existingUser) {
       return NextResponse.json(
@@ -37,8 +33,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await db.insert(usersTable).values({
+    const hashedPassword = await argon2.hash(password);
+    await db.insert(users).values({
       name,
       email,
       password: hashedPassword,
