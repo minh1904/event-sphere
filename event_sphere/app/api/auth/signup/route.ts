@@ -25,7 +25,11 @@ export async function POST(request: Request) {
 
   try {
     const existingUser = (
-      await db.select().from(users).where(eq(users.email, email)).limit(1)
+      await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email.toLowerCase()))
+        .limit(1)
     )[0];
     if (existingUser) {
       return NextResponse.json(

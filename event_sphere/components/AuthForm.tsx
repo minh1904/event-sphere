@@ -53,11 +53,20 @@ const AuthForm = ({ type }: { type: FormType }) => {
         toast.success('Tạo tài khoản thành công');
         router.push('/sign-in');
       } else {
-        toast.success('Đăng nhập thành công');
-        router.push('/');
+        const result = await signIn('credentials', {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+        });
+
+        if (result?.error) {
+          toast.error('Đăng nhập thất bại: Email hoặc mật khẩu không đúng');
+        } else {
+          toast.success('Đăng nhập thành công');
+          router.push('/');
+        }
       }
-      console.log(values);
-    } catch (error: unknown) {
+    } catch (error: any) {
       console.log(error);
       toast.error(`Xuất hiện lỗi: ${error.message}`);
     }
