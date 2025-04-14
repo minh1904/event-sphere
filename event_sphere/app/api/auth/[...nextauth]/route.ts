@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
-import { findUserByEmail } from '../signin/routes';
+import { findUserByEmail } from '../signin/route';
 import { signInSchema } from '@/lib/zod';
 import * as argon2 from 'argon2';
 

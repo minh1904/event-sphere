@@ -4,7 +4,6 @@ BEGIN
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
-
 CREATE TABLE "account" (
 	"userId" text NOT NULL,
 	"type" text NOT NULL,
@@ -29,6 +28,33 @@ CREATE TABLE "authenticator" (
 	"credentialBackedUp" boolean NOT NULL,
 	"transports" text,
 	CONSTRAINT "authenticator_credentialID_unique" UNIQUE("credentialID")
+);
+--> statement-breakpoint
+CREATE TABLE "categories" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"description" text,
+	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE "products" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"category_id" integer NOT NULL,
+	"title" varchar(255) NOT NULL,
+	"description" text,
+	"price" numeric(15, 2) NOT NULL,
+	"is_free" boolean DEFAULT false,
+	"image_url" varchar(255),
+	"type" varchar(100),
+	"date_range" varchar(100),
+	"time_range" varchar(100),
+	"ticket_left" integer DEFAULT 0,
+	"event_date" date,
+	"start_time" time,
+	"end_time" time,
+	"location" varchar(255),
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
@@ -56,5 +82,6 @@ CREATE TABLE "verificationToken" (
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "products" ADD CONSTRAINT "products_category_id_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE UNIQUE INDEX "emailUniqueIndex" ON "user" USING btree (lower("email"));

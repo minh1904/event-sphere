@@ -10,6 +10,11 @@ import {
   pgEnum,
   AnyPgColumn,
   uniqueIndex,
+  serial,
+  varchar,
+  decimal,
+  date,
+  time,
 } from 'drizzle-orm/pg-core';
 import type { AdapterAccountType } from 'next-auth/adapters';
 
@@ -110,3 +115,30 @@ export const authenticators = pgTable(
     },
   ]
 );
+export const categories = pgTable('categories', {
+  id: serial('id').notNull().primaryKey(),
+  name: text('name').notNull(),
+  description: text('description'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+export const products = pgTable('products', {
+  id: serial('id').primaryKey(),
+  categoryId: integer('category_id')
+    .notNull()
+    .references(() => categories.id, { onDelete: 'restrict' }),
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description'),
+  price: decimal('price', { precision: 15, scale: 2 }).notNull(),
+  isFree: boolean('is_free').default(false),
+  imageUrl: varchar('image_url', { length: 255 }),
+  type: varchar('type', { length: 100 }),
+  dateRange: timestamp('date_range').defaultNow(),
+  timeRange: varchar('time_range', { length: 100 }),
+  ticketLeft: integer('ticket_left').default(0),
+  eventDate: date('event_date'),
+  startTime: time('start_time'),
+  endTime: time('end_time'),
+  location: varchar('location', { length: 255 }),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});

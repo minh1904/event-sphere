@@ -3,153 +3,7 @@ import { FilterFee } from './FilterFee';
 import CardEvents from './CardEvents';
 import { PaginationComponent } from './PaginationComponent';
 
-const events = [
-  {
-    id: 1,
-    imageUrl: '/imgs/ev1.jpg',
-    title: 'Hòa Nhạc Mùa Xuân',
-    description: 'Trải nghiệm âm nhạc tuyệt vời trong không gian mở.',
-    dateRange: '10-12/04',
-    timeRange: '18:00 - 21:00',
-    price: 500000,
-    isFree: false,
-    ticketLeft: 10,
-    type: 'Concert',
-  },
-  {
-    id: 2,
-    imageUrl: '/imgs/ev2.jpg',
-    title: 'Hội Chợ Ẩm Thực',
-    description: 'Khám phá những món ăn đặc sắc từ nhiều nền văn hóa.',
-    dateRange: '15-17/04',
-    timeRange: '10:00 - 22:00',
-    price: 0,
-    isFree: true,
-    ticketLeft: 50,
-    type: 'Food Festival',
-  },
-  {
-    id: 3,
-    imageUrl: '/imgs/ev3.jpg',
-    title: 'Workshop Chụp Ảnh',
-    description: 'Nâng cao kỹ năng chụp ảnh với chuyên gia.',
-    dateRange: '20/04',
-    timeRange: '14:00 - 17:00',
-    price: 300000,
-    isFree: false,
-    ticketLeft: 20,
-    type: 'Workshop',
-  },
-  {
-    id: 4,
-    imageUrl: '/imgs/ev4.jpg',
-    title: 'Triển Lãm Nghệ Thuật',
-    description: 'Trưng bày các tác phẩm nghệ thuật từ các họa sĩ nổi tiếng.',
-    dateRange: '25-30/04',
-    timeRange: '09:00 - 18:00',
-    price: 0,
-    isFree: true,
-    ticketLeft: 100,
-    type: 'Exhibition',
-  },
-  {
-    id: 5,
-    imageUrl: '/imgs/ev5.jpg',
-    title: 'Chạy Marathon',
-    description: 'Thử thách bản thân với đường chạy 10km.',
-    dateRange: '05/05',
-    timeRange: '06:00 - 10:00',
-    price: 200000,
-    isFree: false,
-    ticketLeft: 30,
-    type: 'Sports',
-  },
-  {
-    id: 6,
-    imageUrl: '/imgs/ev6.jpg',
-    title: 'Đêm Hội Halloween',
-    description: 'Hóa trang và tham gia các hoạt động thú vị.',
-    dateRange: '31/10',
-    timeRange: '19:00 - 23:00',
-    price: 150000,
-    isFree: false,
-    ticketLeft: 40,
-    type: 'Festival',
-  },
-  {
-    id: 7,
-    imageUrl: '/imgs/ev1.jpg',
-    title: 'Hòa Nhạc Mùa Xuân',
-    description: 'Trải nghiệm âm nhạc tuyệt vời trong không gian mở.',
-    dateRange: '10-12/04',
-    timeRange: '18:00 - 21:00',
-    price: 500000,
-    isFree: false,
-    ticketLeft: 10,
-    type: 'Concert',
-  },
-  {
-    id: 8,
-    imageUrl: '/imgs/ev2.jpg',
-    title: 'Hội Chợ Ẩm Thực',
-    description: 'Khám phá những món ăn đặc sắc từ nhiều nền văn hóa.',
-    dateRange: '15-17/04',
-    timeRange: '10:00 - 22:00',
-    price: 0,
-    isFree: true,
-    ticketLeft: 50,
-    type: 'Food Festival',
-  },
-  {
-    id: 9,
-    imageUrl: '/imgs/ev3.jpg',
-    title: 'Workshop Chụp Ảnh',
-    description: 'Nâng cao kỹ năng chụp ảnh với chuyên gia.',
-    dateRange: '20/04',
-    timeRange: '14:00 - 17:00',
-    price: 300000,
-    isFree: false,
-    ticketLeft: 20,
-    type: 'Workshop',
-  },
-  {
-    id: 10,
-    imageUrl: '/imgs/ev4.jpg',
-    title: 'Triển Lãm Nghệ Thuật',
-    description: 'Trưng bày các tác phẩm nghệ thuật từ các họa sĩ nổi tiếng.',
-    dateRange: '25-30/04',
-    timeRange: '09:00 - 18:00',
-    price: 0,
-    isFree: true,
-    ticketLeft: 100,
-    type: 'Exhibition',
-  },
-  {
-    id: 11,
-    imageUrl: '/imgs/ev5.jpg',
-    title: 'Chạy Marathon',
-    description: 'Thử thách bản thân với đường chạy 10km.',
-    dateRange: '05/05',
-    timeRange: '06:00 - 10:00',
-    price: 200000,
-    isFree: false,
-    ticketLeft: 30,
-    type: 'Sports',
-  },
-  {
-    id: 12,
-    imageUrl: '/imgs/ev6.jpg',
-    title: 'Đêm Hội Halloween',
-    description: 'Hóa trang và tham gia các hoạt động thú vị.',
-    dateRange: '31/10',
-    timeRange: '19:00 - 23:00',
-    price: 150000,
-    isFree: false,
-    ticketLeft: 40,
-    type: 'Festival',
-  },
-];
-
+// Hàm xử lý dấu tiếng Việt
 function removeVietnameseTones(str: string): string {
   str = str.toLowerCase();
   str = str
@@ -164,16 +18,43 @@ function removeVietnameseTones(str: string): string {
   return str;
 }
 
+// Định nghĩa interface cho dữ liệu sự kiện
+interface Event {
+  id: number;
+  imageUrl: string;
+  title: string;
+  description: string;
+  dateRange: string;
+  timeRange: string;
+  price: number;
+  isFree: boolean;
+  ticketLeft: number;
+  type: string;
+}
+
 const Events = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string };
 }) => {
   const searchQuery = searchParams?.query || '';
-  const feeFilter = searchParams?.fee || ''; // 'free', 'paid', hoặc rỗng
-  const typeFilter = searchParams?.type || ''; // Danh mục tiếng Việt hoặc rỗng
+  const feeFilter = searchParams?.fee || '';
+  const typeFilter = searchParams?.type || '';
 
   const normalizedQuery = removeVietnameseTones(searchQuery);
+
+  // Lấy dữ liệu từ API
+  const response = await fetch('http://localhost:3000/api/data', {
+    cache: 'no-store',
+  });
+  let events: Event[] = [];
+
+  if (response.ok) {
+    const data = await response.json();
+    events = data.events;
+  } else {
+    console.error('Failed to fetch events');
+  }
 
   const filteredEvents = events.filter((event) => {
     const normalizedTitle = removeVietnameseTones(event.title);
@@ -189,26 +70,21 @@ const Events = async ({
           ? !event.isFree
           : true;
 
-    const matchesType = typeFilter
-      ? event.type === typeFilter // So sánh chính xác với type tiếng Việt
-      : true;
+    const matchesType = typeFilter ? event.type === typeFilter : true;
 
     return matchesQuery && matchesFee && matchesType;
   });
-  const eventsPerPage = 9; // Số sự kiện mỗi trang
-  const currentPage = Number(searchParams?.page) || 1; // Lấy trang hiện tại từ searchParams
-  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage); // Tổng số trang
 
-  // Đảm bảo currentPage hợp lệ
+  const eventsPerPage = 9;
+  const currentPage = Number(searchParams?.page) || 1;
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
   const validPage = Math.max(1, Math.min(currentPage, totalPages));
-
-  // Tính toán sự kiện hiển thị trên trang hiện tại
   const startIndex = (validPage - 1) * eventsPerPage;
   const endIndex = startIndex + eventsPerPage;
   const paginatedEvents = filteredEvents.slice(startIndex, endIndex);
+
   return (
     <div className="mt-5">
-      {/* Bộ lọc */}
       <div className="flex gap-2.5 justify-center">
         <FilterType />
         <FilterFee />
