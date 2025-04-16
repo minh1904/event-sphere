@@ -1,5 +1,5 @@
 {
-  "id": "f02d9860-0074-4238-8df7-33280764ad69",
+  "id": "2c073588-eb39-425a-9c76-d85832c5bc13",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -271,15 +271,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "date_range": {
-          "name": "date_range",
-          "type": "varchar(100)",
+        "dateStart": {
+          "name": "dateStart",
+          "type": "date",
           "primaryKey": false,
           "notNull": false
         },
-        "time_range": {
-          "name": "time_range",
-          "type": "varchar(100)",
+        "dateEnd": {
+          "name": "dateEnd",
+          "type": "date",
           "primaryKey": false,
           "notNull": false
         },
@@ -289,12 +289,6 @@
           "primaryKey": false,
           "notNull": false,
           "default": 0
-        },
-        "event_date": {
-          "name": "event_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
         },
         "start_time": {
           "name": "start_time",

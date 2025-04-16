@@ -1,3 +1,4 @@
+import Cart from '@/components/Cart';
 import Events from '@/components/Events';
 import Search from '@/components/Search';
 import { Pagination } from '@/components/ui/pagination';
@@ -8,9 +9,10 @@ const Home = async ({
 }: {
   searchParams: { query?: string; page?: string };
 }) => {
-  const query = searchParams.query || '';
+  const params = await searchParams;
+  const query = params.query || '';
   return (
-    <div className="mt-8 md:mt-56">
+    <div className="mt-35 md:mt-50">
       <div className="flex justify-center mb-5">
         <h1 className="uppercase text-3xl md:text-5xl font-bold ">
           Tìm kiếm sự kiện
@@ -19,6 +21,7 @@ const Home = async ({
       <Search query={query} />
       <Events searchParams={searchParams} />
       <Pagination />
+      <Cart />
     </div>
   );
 };

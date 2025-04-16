@@ -8,11 +8,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import LocalMallSharpIcon from '@mui/icons-material/LocalMallSharp';
+import CartToggle from './CartToggle';
 
 const Navbar = async () => {
   const session = await auth();
+
   return (
-    <nav className="w-full flex justify-between items-center p-4 md:px-8">
+    <nav className="w-full flex justify-between items-center p-4 md:px-8 fixed top-0 left-0">
       <Link href="/about" className="flex items-center space-x-2 ">
         <Image
           src="/imgs/Logo.png"
@@ -50,10 +52,7 @@ const Navbar = async () => {
       <div>
         {session && session?.user ? (
           <div className="space-x-1.5 flex items-center">
-            <LocalMallSharpIcon
-              className="cursor-pointer mb-0.5"
-              sx={{ fontSize: 35 }}
-            />
+            <CartToggle />
             <DropdownUser />
           </div>
         ) : (

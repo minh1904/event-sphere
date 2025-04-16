@@ -18,18 +18,19 @@ function removeVietnameseTones(str: string): string {
   return str;
 }
 
-// Định nghĩa interface cho dữ liệu sự kiện
 interface Event {
   id: number;
+  ticketLeft: number;
   imageUrl: string;
+  type: string;
   title: string;
   description: string;
-  dateRange: string;
-  timeRange: string;
+  startTime: string;
+  endTime: string;
+  dateStart: string;
+  dateEnd: string;
   price: number;
   isFree: boolean;
-  ticketLeft: number;
-  type: string;
 }
 
 const Events = async ({
@@ -37,13 +38,13 @@ const Events = async ({
 }: {
   searchParams: { [key: string]: string };
 }) => {
-  const searchQuery = searchParams?.query || '';
-  const feeFilter = searchParams?.fee || '';
-  const typeFilter = searchParams?.type || '';
+  const params = await searchParams;
+  const searchQuery = params?.query || '';
+  const feeFilter = params?.fee || '';
+  const typeFilter = params?.type || '';
 
   const normalizedQuery = removeVietnameseTones(searchQuery);
 
-  // Lấy dữ liệu từ API
   const response = await fetch('http://localhost:3000/api/data', {
     cache: 'no-store',
   });
@@ -75,8 +76,8 @@ const Events = async ({
     return matchesQuery && matchesFee && matchesType;
   });
 
-  const eventsPerPage = 9;
-  const currentPage = Number(searchParams?.page) || 1;
+  const eventsPerPage = 12;
+  const currentPage = Number(params?.page) || 1;
   const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
   const validPage = Math.max(1, Math.min(currentPage, totalPages));
   const startIndex = (validPage - 1) * eventsPerPage;

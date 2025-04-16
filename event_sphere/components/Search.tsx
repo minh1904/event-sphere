@@ -22,7 +22,7 @@ const Search = ({ query }: { query: string }) => {
     replace(`${pathName}?${params.toString()}`);
   }, 300);
   return (
-    <div className=" relative w-dvw max-w-sm mx-auto lg:max-w-[618px] ">
+    <div className=" relative w-dvw max-w-sm mx-auto lg:max-w-[618px]">
       <Form action="/" scroll={false} className="search-form  ">
         <input
           name="query"

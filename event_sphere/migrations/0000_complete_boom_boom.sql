@@ -1,3 +1,4 @@
+
 DO $$ 
 BEGIN
     CREATE TYPE "role" AS ENUM('user', 'admin');
@@ -46,10 +47,9 @@ CREATE TABLE "products" (
 	"is_free" boolean DEFAULT false,
 	"image_url" varchar(255),
 	"type" varchar(100),
-	"date_range" varchar(100),
-	"time_range" varchar(100),
+	"dateStart" date,
+	"dateEnd" date,
 	"ticket_left" integer DEFAULT 0,
-	"event_date" date,
 	"start_time" time,
 	"end_time" time,
 	"location" varchar(255),
