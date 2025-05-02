@@ -31,6 +31,8 @@ interface Event {
   dateEnd: string;
   price: number;
   isFree: boolean;
+  short_title: string;
+  location: string;
 }
 
 const Events = async ({

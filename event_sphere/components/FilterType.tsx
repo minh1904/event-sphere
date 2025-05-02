@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/popover';
 
 const frameworks = [
-  { value: '', label: 'Tất cả' }, // Giá trị rỗng đại diện cho "Tất cả"
+  { value: '', label: 'Tất cả' },
   { value: 'Doanh nghiệp', label: 'Doanh nghiệp' },
   { value: 'Văn hóa', label: 'Văn hóa' },
   { value: 'Thể thao', label: 'Thể thao' },

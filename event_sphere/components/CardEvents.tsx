@@ -9,13 +9,14 @@ interface CardEventsProps {
   imageUrl: string;
   type: string;
   title: string;
-  description: string;
+  short_title: string;
   startTime: string;
   endTime: string;
   dateStart: string;
   dateEnd: string;
   price: number;
   isFree: boolean;
+  location: string;
 }
 
 const CardEvents: React.FC<CardEventsProps> = ({
@@ -24,30 +25,30 @@ const CardEvents: React.FC<CardEventsProps> = ({
   imageUrl,
   type,
   title,
-  description,
+  short_title,
   endTime,
   startTime,
   dateStart,
   dateEnd,
   price,
   isFree,
+  location,
 }) => {
   // Hàm format ngày
   const formatDate = (date: string): string => {
     try {
       return format(new Date(date), 'dd/MM/yy');
     } catch {
-      return date; // Trả về nguyên gốc nếu lỗi
+      return date;
     }
   };
 
   // Hàm format giờ
   const formatTime = (time: string): string => {
     try {
-      // Giả sử time có dạng "HH:mm:ss" hoặc "HH:mm"
       return format(new Date(`1970-01-01T${time}`), 'HH:mm');
     } catch {
-      return time; // Trả về nguyên gốc nếu lỗi
+      return time;
     }
   };
 
@@ -59,7 +60,9 @@ const CardEvents: React.FC<CardEventsProps> = ({
 
   return (
     <div className="h-[500px] bg-[#ECDCC1] flex flex-col shadow-triple group overflow-hidden transition-all duration-300">
-      <p className="py-2 text-center">{ticketLeft} vé còn lại</p>
+      <p className="py-2 text-center">
+        {location} - {ticketLeft} vé còn lại
+      </p>
       {/* Ảnh */}
       <div className="relative w-full h-64 overflow-hidden">
         {imageUrl ? (
@@ -71,7 +74,7 @@ const CardEvents: React.FC<CardEventsProps> = ({
             className="rounded-t-lg object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+          <div className="w-full bg-amber-50 h-full flex items-center justify-center">
             <span>Không có ảnh</span>
           </div>
         )}
@@ -79,11 +82,11 @@ const CardEvents: React.FC<CardEventsProps> = ({
 
       <div className="mt-5 space-y-1 px-4">
         <p className="text-gray-700 uppercase">{type}</p>
-        <Link href={`/post/${id}`} className="text-2xl uppercase font-bold">
+        <Link href={`/event/${id}`} className="text-2xl uppercase font-bold">
           {title}
         </Link>
 
-        <p className="text-gray-700">{description}</p>
+        <p className="text-gray-700">{short_title}</p>
       </div>
 
       <div className="flex justify-between mt-auto pb-4 px-4">

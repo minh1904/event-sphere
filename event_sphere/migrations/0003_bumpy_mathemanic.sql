@@ -1,0 +1,1 @@
+ALTER TABLE "products" ADD COLUMN "short_title" text DEFAULT 'Chưa có tiêu đề ngắn' NOT NULL;

@@ -8,7 +8,7 @@ const CartToggle = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
 
   const handleToggleCart = () => {
-    setIsCartOpen(!isCartOpen); // Sửa lại đây, lấy giá trị hiện tại và đảo ngược
+    setIsCartOpen(!isCartOpen);
   };
 
   return (

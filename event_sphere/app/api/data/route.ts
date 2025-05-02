@@ -5,10 +5,8 @@ import { products } from '@/db/schema';
 
 export async function GET() {
   try {
-    // Truy vấn dữ liệu từ database
     const allData = await db.select().from(products);
 
-    // Chuyển đổi dữ liệu để phù hợp với định dạng frontend
     const formattedData = allData.map((product) => ({
       id: product.id,
       title: product.title,
@@ -22,9 +20,10 @@ export async function GET() {
       price: parseFloat(product.price.toString()),
       isFree: product.isFree,
       ticketLeft: product.ticketLeft,
+      location: product.location,
+      short_title: product.shortTitle,
     }));
 
-    // Trả về dữ liệu dưới dạng JSON
     return NextResponse.json({ events: formattedData }, { status: 200 });
   } catch (error) {
     console.error('Database error:', error);

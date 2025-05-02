@@ -127,6 +127,7 @@ export const products = pgTable('products', {
     .notNull()
     .references(() => categories.id, { onDelete: 'restrict' }),
   title: varchar('title', { length: 255 }).notNull(),
+  shortTitle: text('short_title').notNull().default('Chưa có tiêu đề ngắn'),
   description: text('description'),
   price: decimal('price', { precision: 15, scale: 2 }).notNull(),
   isFree: boolean('is_free').default(false),
@@ -140,4 +141,44 @@ export const products = pgTable('products', {
   location: varchar('location', { length: 255 }),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
+  status: varchar('status', { length: 50 }).default('active'),
 });
+
+export const cart_items = pgTable(
+  'cart_items',
+  {
+    id: serial('id').notNull().primaryKey(),
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }), // Liên kết với người dùng
+    productId: integer('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'restrict' }), // Liên kết với vé
+    quantity: integer('quantity').notNull().default(1), // Số lượng vé
+    price: decimal('price', { precision: 15, scale: 2 }).notNull(), // Giá vé tại thời điểm thêm
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('user_product_unique').on(table.userId, table.productId), // Mỗi vé chỉ xuất hiện một lần trong giỏ hàng
+  ]
+);
+
+export const imageSourceEnum = pgEnum('image_source', ['local', 'external']);
+
+export const product_images = pgTable(
+  'product_images',
+  {
+    id: serial('id').notNull().primaryKey(),
+    productId: integer('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    imageUrl: varchar('image_url', { length: 255 }).notNull(),
+    sourceType: imageSourceEnum('source_type').notNull().default('local'),
+    isPrimary: boolean('is_primary').notNull().default(false),
+    order: integer('order').default(0),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('product_image_unique').on(table.productId, table.imageUrl),
+  ]
+);

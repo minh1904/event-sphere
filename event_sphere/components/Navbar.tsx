@@ -8,13 +8,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import LocalMallSharpIcon from '@mui/icons-material/LocalMallSharp';
-import CartToggle from './CartToggle';
+import CartToggle from './cartToggle';
 
 const Navbar = async () => {
   const session = await auth();
 
   return (
-    <nav className="w-full flex justify-between items-center p-4 md:px-8 fixed top-0 left-0">
+    <nav className="z-9999 w-full flex justify-between items-center py-2 md:px-8 fixed top-0 left-0 bg-amber-50">
       <Link href="/about" className="flex items-center space-x-2 ">
         <Image
           src="/imgs/Logo.png"

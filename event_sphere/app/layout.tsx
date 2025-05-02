@@ -34,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${BeVietnamPro.className} antialiased`}>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={`${BeVietnamPro.className} antialiased `}>
         {children}
         <Toaster />
       </body>
