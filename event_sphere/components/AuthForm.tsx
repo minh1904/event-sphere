@@ -66,9 +66,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
           router.push('/');
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
-      toast.error(`Xuất hiện lỗi: ${error.message}`);
+      toast.error(
+        `Xuất hiện lỗi: ${error instanceof Error ? error.message : 'Có lỗi xảy ra'}`
+      );
     }
   }
   return (

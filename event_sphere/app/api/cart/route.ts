@@ -1,4 +1,3 @@
-// app/api/cart/route.ts
 import { auth } from '@/auth';
 import { db } from '@/db';
 import { cart_items, products } from '@/db/schema';
@@ -7,6 +6,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const session = await auth();
+
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

@@ -38,12 +38,17 @@ export async function POST(request: Request) {
       );
     }
     const hashedPassword = await argon2.hash(password);
-    await db.insert(users).values({
-      name,
-      email,
-      password: hashedPassword,
-      role: 'user',
-    });
+    const newUser = await db
+      .insert(users)
+      .values({
+        name,
+        email,
+        password: hashedPassword,
+        role: 'user',
+      })
+      .returning({ id: users.id })
+      .then((res) => res[0]);
+    console.log(newUser.id);
     return NextResponse.json(
       { message: 'Tạo tài khoản thành công' },
       { status: 201 }

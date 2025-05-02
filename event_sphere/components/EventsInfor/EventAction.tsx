@@ -33,6 +33,7 @@ const EventAction = ({ price }: Props) => {
               <button
                 className="cursor-pointer w-10 h-full flex items-center justify-center bg-black text-white rounded-l-xl"
                 onClick={handleDecrement}
+                disabled={quantity <= 1}
               >
                 -
               </button>
