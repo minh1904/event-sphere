@@ -9,12 +9,7 @@ import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from '@/db';
 import { VerifyEmail } from './app/api/verifyEmail/route';
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db, {
     accountsTable: schema.accounts,
     usersTable: schema.users,
@@ -34,7 +29,6 @@ export const {
     session({ session, token }) {
       session.user.id = token.id;
       session.user.role = token.role;
-
       return session;
     },
   },

@@ -12,7 +12,6 @@ import CartToggle from './cartToggle';
 
 const Navbar = async () => {
   const session = await auth();
-  console.log('day la sesion', session?.user);
 
   return (
     <nav className="z-9999 w-full flex justify-between items-center py-2 md:px-8 fixed top-0 left-0 bg-amber-50">
