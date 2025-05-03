@@ -4,9 +4,10 @@ import Credentials from 'next-auth/providers/credentials';
 import { findUserByEmail } from '../signin/route';
 import { signInSchema } from '@/lib/zod';
 import * as argon2 from 'argon2';
+import * as schema from '@/db/schema';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from '@/db';
-('@db');
+import { VerifyEmail } from '../../verifyEmail/route';
 
 export const {
   handlers: { GET, POST },
@@ -14,10 +15,37 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  adapter: DrizzleAdapter(db),
+  adapter: DrizzleAdapter(db, {
+    accountsTable: schema.accounts,
+    usersTable: schema.users,
+    authenticatorsTable: schema.authenticators,
+    sessionsTable: schema.sessions,
+    verificationTokensTable: schema.verificationTokens,
+  }),
   session: { strategy: 'jwt' },
   secret: process.env.AUTH_SECRET,
   pages: { signIn: '/sign-in' },
+  callbacks: {
+    jwt({ token, user }) {
+      console.log('user la', user);
+      if (user?.id) token.id = user.id;
+      if (user?.role) token.role = user.role;
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id;
+      session.user.role = token.role;
+
+      return session;
+    },
+  },
+  events: {
+    async linkAccount({ user, account }) {
+      if (['google'].includes(account.provider)) {
+        if (user.email) await VerifyEmail(user.email);
+      }
+    },
+  },
   providers: [
     Google({
       authorization: {
@@ -45,9 +73,10 @@ export const {
           if (!passwordValid) return null;
 
           return {
-            id: user.id,
+            id: String(user.id),
             email: user.email,
             name: user.name,
+            role: user.role,
           };
         } catch (error) {
           console.error('Lỗi xác thực:', error);
