@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import { Providers } from '../../state/CartContext';
+import Provider from '@/components/provider';
 
 export default function RootLayout({
   children,
@@ -8,11 +9,14 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <Providers>
+      <Provider>
         {' '}
-        <Navbar />
-        {children}
-      </Providers>
+        <Providers>
+          {' '}
+          <Navbar />
+          {children}
+        </Providers>
+      </Provider>
     </>
   );
 }

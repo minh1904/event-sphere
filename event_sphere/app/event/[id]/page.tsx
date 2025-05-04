@@ -6,7 +6,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Link from 'next/link';
 import ImgDisplay from '@/components/EventsInfor/ImgDisplay';
 import EventAction from '@/components/EventsInfor/EventAction';
-import Cart from '@/components/Cart';
+import Cart from '@/components/cart/Cart';
 
 export default async function Event({ params }: { params: { id: string } }) {
   const param = await params;
@@ -102,7 +102,11 @@ export default async function Event({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-      <EventAction price={Number(eventId.price)} />
+      <EventAction
+        productId={eventId.id}
+        ticketLeft={eventId.ticketLeft}
+        price={Number(eventId.price)}
+      />
     </div>
   );
 }

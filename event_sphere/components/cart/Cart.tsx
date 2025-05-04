@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Image from 'next/image';
-import CounterButton from './CounterButton';
 import { useAtom } from 'jotai';
+import CounterButton from './CounterButton';
 import { isCartOpenAtom } from '@/app/state/CartContext';
 
 interface CartItem {
@@ -24,7 +24,6 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Lấy dữ liệu từ API khi component mount hoặc khi giỏ hàng mở
   useEffect(() => {
     if (openCart) {
       const fetchCartItems = async () => {
@@ -93,7 +92,7 @@ const Cart = () => {
                   </div>
                   <div className="product-footer flex justify-between">
                     <DeleteForeverIcon /> <span>Xoá</span>
-                    <CounterButton />
+                    <CounterButton quantity={item.quantity} />
                   </div>
                 </div>
               </div>

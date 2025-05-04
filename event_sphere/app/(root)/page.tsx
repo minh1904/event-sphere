@@ -1,4 +1,4 @@
-import Cart from '@/components/Cart';
+import Cart from '@/components/cart/Cart';
 import Events from '@/components/Events';
 import Search from '@/components/Search';
 import { Pagination } from '@/components/ui/pagination';
