@@ -1,15 +1,36 @@
 'use client';
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 
 interface CounterButtonProps {
+  productId: number;
   quantity: number;
+  onQuantityChange: () => void;
 }
 
-const CounterButton = ({ quantity }: CounterButtonProps) => {
+const CounterButton = ({
+  productId,
+  quantity,
+  onQuantityChange,
+}: CounterButtonProps) => {
   const [count, setCount] = useState(quantity);
 
-  const increase = () => setCount(count + 1);
-  const decrease = () => setCount(count > 0 ? count - 1 : 0);
+  const mutation = useMutation({
+    mutationFn: async (newQty: number) => {
+      await axios.put('/api/cart/update', { productId, quantity: newQty });
+      return newQty;
+    },
+    onSuccess: (newQty) => {
+      setCount(newQty);
+      onQuantityChange();
+    },
+  });
+
+  const increase = () => mutation.mutate(count + 1);
+  const decrease = () => {
+    if (count > 1) mutation.mutate(count - 1);
+  };
 
   return (
     <div className="border-1 border-black flex justify-between px-1">

@@ -1,11 +1,12 @@
-// components/Cart.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Image from 'next/image';
 import { useAtom } from 'jotai';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import CounterButton from './CounterButton';
 import { isCartOpenAtom } from '@/app/state/CartContext';
 
@@ -19,40 +20,38 @@ interface CartItem {
   imageUrl: string | null;
 }
 
+const fetchCartItems = async () => {
+  const res = await axios.get('/api/cart');
+  return res.data;
+};
+
 const Cart = () => {
   const [openCart, setIsOpenCart] = useAtom(isCartOpenAtom);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (openCart) {
-      const fetchCartItems = async () => {
-        try {
-          const response = await fetch('/api/cart');
-          const data = await response.json();
-          if (response.ok) {
-            setCartItems(data);
-          } else {
-            console.error('Error fetching cart:', data.error);
-          }
-        } catch (error) {
-          console.error('Error fetching cart:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchCartItems();
-    }
-  }, [openCart]);
+  const deleteItem = useMutation({
+    mutationFn: async (productId: number) => {
+      return axios.delete(`/api/cart/update?productId=${productId}`);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
+  const {
+    data: cartItems = [],
+    isLoading,
+    refetch,
+  } = useQuery<CartItem[]>({
+    queryKey: ['cartItems'],
+    queryFn: fetchCartItems,
+    enabled: openCart,
+    refetchOnMount: true,
+  });
 
-  const onHandle = () => {
-    setIsOpenCart(!openCart);
-  };
-
-  // Tính tổng giá
   const totalPrice = cartItems.reduce((total, item) => {
     return total + Number(item.price) * item.quantity;
   }, 0);
+
+  const onHandle = () => setIsOpenCart(false);
 
   return (
     <div
@@ -65,8 +64,8 @@ const Cart = () => {
         </div>
       </div>
       <div className="middle h-[320px] overflow-scroll overflow-x-hidden">
-        {loading ? (
-          <p className="text-center">Đang tải. ..</p>
+        {isLoading ? (
+          <p className="text-center">Đang tải...</p>
         ) : cartItems.length === 0 ? (
           <p className="text-center">Giỏ hàng trống</p>
         ) : (
@@ -91,8 +90,16 @@ const Cart = () => {
                     <p>{item.type || 'Thường'}</p>
                   </div>
                   <div className="product-footer flex justify-between">
-                    <DeleteForeverIcon /> <span>Xoá</span>
-                    <CounterButton quantity={item.quantity} />
+                    <DeleteForeverIcon
+                      onClick={() => deleteItem.mutate(item.productId)}
+                      className="cursor-pointer"
+                    />
+
+                    <CounterButton
+                      quantity={item.quantity}
+                      productId={item.productId}
+                      onQuantityChange={() => refetch()}
+                    />
                   </div>
                 </div>
               </div>
